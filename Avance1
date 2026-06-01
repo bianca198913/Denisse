@@ -1,0 +1,97 @@
+Código con ventana 
+import tkinter as tk
+from tkinter import messagebox
+
+# Clase Sanitario
+class Sanitario:
+    def __init__(self, nombre, limpieza, papel):
+        self.nombre = nombre
+        self.limpieza = limpieza
+        self.papel = int(papel)
+
+    def mostrar_info(self):
+        return f"Sanitario: {self.nombre}\nLimpieza: {self.limpieza}\nPapel disponible: {self.papel}"
+
+    def usar_papel(self, cantidad):
+        if cantidad <= self.papel:
+            self.papel -= cantidad
+            return f"Se usó papel higiénico.\nPapel restante: {self.papel}"
+        else:
+            return "No hay suficiente papel higiénico."
+
+    def reabastecer(self, cantidad):
+        self.papel += cantidad
+        return f"Nuevo total de papel: {self.papel}"
+
+
+# Funciones
+def registrar():
+    global sanitario
+
+    nombre = entrada_nombre.get()
+    limpieza = entrada_limpieza.get()
+    papel = entrada_papel.get()
+
+    sanitario = Sanitario(nombre, limpieza, papel)
+    resultado.config(text="Sanitario registrado correctamente")
+
+def mostrar():
+    resultado.config(text=sanitario.mostrar_info())
+
+def usar():
+    cantidad = int(entrada_usar.get())
+    resultado.config(text=sanitario.usar_papel(cantidad))
+
+def agregar():
+    cantidad = int(entrada_agregar.get())
+    resultado.config(text=sanitario.reabastecer(cantidad))
+
+
+# Ventana principal
+ventana = tk.Tk()
+ventana.title("Higiene de los Sanitarios")
+ventana.geometry("400x450")
+
+# Título
+titulo = tk.Label(ventana, text="Control de Higiene de Sanitarios", font=("Arial", 14))
+titulo.pack()
+
+# Entradas
+tk.Label(ventana, text="Nombre del sanitario").pack()
+entrada_nombre = tk.Entry(ventana)
+entrada_nombre.pack()
+
+tk.Label(ventana, text="Estado de limpieza").pack()
+entrada_limpieza = tk.Entry(ventana)
+entrada_limpieza.pack()
+
+tk.Label(ventana, text="Cantidad de papel").pack()
+entrada_papel = tk.Entry(ventana)
+entrada_papel.pack()
+
+# Botón registrar
+tk.Button(ventana, text="Registrar Sanitario", command=registrar).pack(pady=5)
+
+# Botón mostrar info
+tk.Button(ventana, text="Mostrar Información", command=mostrar).pack(pady=5)
+
+# Usar papel
+tk.Label(ventana, text="Cantidad de papel usado").pack()
+entrada_usar = tk.Entry(ventana)
+entrada_usar.pack()
+
+tk.Button(ventana, text="Usar Papel", command=usar).pack(pady=5)
+
+# Reabastecer papel
+tk.Label(ventana, text="Cantidad de papel a agregar").pack()
+entrada_agregar = tk.Entry(ventana)
+entrada_agregar.pack()
+
+tk.Button(ventana, text="Reabastecer Papel", command=agregar).pack(pady=5)
+
+# Resultado
+resultado = tk.Label(ventana, text="", fg="blue")
+resultado.pack(pady=10)
+
+# Ejecutar ventana
+ventana.mainloop()
